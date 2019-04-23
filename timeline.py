@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 '''
 autor: vigocat   2019/04/21 23:45
@@ -16,6 +17,8 @@ print("               :2019end---")
 
 '''
 import random
+import sys
+import getopt
 
 
 #axis:轴的位置 startstr:起始字符串 data:数据
@@ -52,6 +55,9 @@ def printTimeline():
 
 
 def readData():
+    '''
+        从本文件中读取数据
+    '''
     data = []
     startflag = 0
     with open('./timeline.py') as f:
@@ -70,6 +76,9 @@ def readData():
     return data
 
 def writeData(t,sth):
+    '''
+        向本文件中写入数据
+    '''
     lineStr = "#"+t+sth+' '*8 +'\n'
     lineEnd = "#data_end"
     with open("./timeline.py",'r+b') as f:
@@ -83,12 +92,38 @@ def writeData(t,sth):
     printTimeline()
                 
 
-    
+if __name__ == '__main__':
+    argv = sys.argv[1:]
+    t = None
+    sth = None
+    try :
+        # res [(参数,,,)(值,,,)]
+        res  = getopt.getopt(argv,'t:s:p',["help"])
+        opts,args = res
+    except getopt.GetoptError as e:
+        print(e)
+        sys.exit(2)
+    if not len(opts):
+        printTimeline()
+        sys.exit()
+    for opt,arg in opts:
+        if opt == '--help':
+            print("no help, sorry qwq ! ")
+            sys.exit()
+        if opt == '-p':
+            printTimeline()
+            sys.exit()
+        if opt == '-t':
+            t = arg
+        if opt == '-s':
+            sth = arg
+    if t and sth :
+        writeData(t,sth)
+        printTimeline()
 
-printTimeline()
-
-
+#不建议这样做
 #data_start
-#04/21linux开发环境搭建
-#04/22时间轴脚本                
+#04/21print打印
+#04/22文件存储数据                
+#04/23命令行参数完成        
 #data_end
